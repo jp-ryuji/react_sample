@@ -1,18 +1,33 @@
+// https://codezine.jp/article/detail/10593
+
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Form from './Form';
+import List from './List';
 
 class App extends Component {
+  state = {
+    posts: []
+  }
+
+  // Formが作成した投稿を保存する処理
+  saveNewPost(newPost) { // (2)
+    // 投稿にidを付与する
+    const newPostWithId = {
+      ...newPost,
+      id: Date.now()
+    }
+    // state内の投稿リストに加える
+    this.setState({
+      posts: [...this.state.posts, newPostWithId] // (4)
+    });
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <Form onSubmitNewPost={(newPost) => this.saveNewPost(newPost)} />
+        <hr />
+        <List posts={this.state.posts} />
       </div>
     );
   }
